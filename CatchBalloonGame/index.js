@@ -165,6 +165,7 @@ var update = function (modifier) {
         down = false; // for animation
         left = false; // for animation
         right = false; // for animation
+        walkSound.play();
         hero.y -= hero.speed * modifier;
     }
     //if (40 in keysDown && hero.y < canvas.height - (64 + 6)) { //  holding down key
@@ -173,6 +174,7 @@ var update = function (modifier) {
         down = true; // for animation
         left = false; // for animation
         right = false; // for animation
+        walkSound.play();
         hero.y += hero.speed * modifier;
     }
     if (37 in keysDown && hero.x > (32 + 4)) { // holding left key
@@ -180,6 +182,7 @@ var update = function (modifier) {
         down = false; // for animation
         left = true; // for animation
         right = false; // for animation
+        walkSound.play();
         hero.x -= hero.speed * modifier;
     }
 
@@ -189,6 +192,7 @@ var update = function (modifier) {
         down = false; // for animation
         left = false; // for animation
         right = true; // for animation
+        walkSound.play();
         hero.x += hero.speed * modifier;
     }
 
@@ -200,6 +204,7 @@ var update = function (modifier) {
         && hero.y <= (balloon.y + 64)
         && balloon.y <= (hero.y + 64)
     ) {
+        balloonSound.play();
         ++balloonsCaught;       // keep track of our “score”
         if (balloonsCaught > 4) {
             alert("You won!")            
@@ -254,6 +259,7 @@ var update = function (modifier) {
     // check if hero touches bomb
   
     if (touchingBomb(hero)) {
+        bombSound.play();
         alert("You have been shocked to death, game over!")
         gameOver = true;
     }
@@ -376,4 +382,32 @@ function touchingBomb(who) {
             && bomb5.y <= (who.y + 64))
     )
         return true;        
+}
+
+//=============================================================
+
+//add game sound
+
+var bombSound;
+var balloonSound;
+var walkSound;
+
+bombSound = new sound("bomb.mp3");
+balloonSound = new sound("catchballoon.mp3");
+walkSound = new sound("walk1.mp3");
+
+
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function () {
+        this.sound.play();
+    }
+    this.stop = function () {
+        this.sound.pause();
+    }
 }
